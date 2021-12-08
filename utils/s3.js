@@ -2,6 +2,7 @@ import {
   GetObjectCommand,
   ListObjectsCommand,
   PutObjectCommand,
+  DeleteObjectCommand,
   S3Client,
 } from "@aws-sdk/client-s3"
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
@@ -34,7 +35,7 @@ const listItemsFn = async (credentials) => {
 
   const fileNames = Contents?.map(({ Key }) => {
     const { name, encoded } = filenameGenerator(Key)
-    return `<p><a class="link" id="${encoded}">${name}</a></p>`
+    return `<p><a class="link" id="${encoded}">${name}</a> <button id="${encoded}-delete">Delete</button></p>`
   })
 
   document.querySelector("#list-items").innerHTML = fileNames?.join("\n")
@@ -44,6 +45,13 @@ const listItemsFn = async (credentials) => {
     document
       .querySelector(`#${encoded}`)
       .addEventListener("click", () => view(credentials, Key))
+  })
+
+  Contents?.forEach(({ Key }) => {
+    const { encoded } = filenameGenerator(Key)
+    document
+      .querySelector(`#${encoded}-delete`)
+      .addEventListener("click", () => delobj(credentials, Key))
   })
 }
 
@@ -75,7 +83,7 @@ const uploadFn = async (credentials) => {
   } catch (err) {
     alert(err.message)
 
-    window.location = "http://localhost:3000"
+    window.location.reload()
   }
 }
 
@@ -93,6 +101,26 @@ const view = async (credentials, key) => {
   const url = await getSignedUrl(s3Client, command, { expiresIn: 3600 })
 
   window.open(url)
+}
+
+const delobj = async (credentials, key) =>{
+  const s3Client = new S3Client({
+    region,
+    credentials,
+  })
+
+  const command = new DeleteObjectCommand({
+    Bucket: bucket,
+    Key: key,
+  })
+
+  const response = await s3Client.send(command);
+
+  const successful = response?.$metadata?.httpStatusCode == 204
+  
+  window.alert(`Success = ${successful}`)
+
+  window.location.reload();
 }
 
 export { listItemsFn, uploadFn }

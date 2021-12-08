@@ -6,7 +6,7 @@ import { listItemsFn, uploadFn } from "./utils/s3"
 const App = async () => {
   if (!idToken) {
     return (document.querySelector("#app").innerHTML = `
-      <h1 id="title">AWS Simple Cognito Auth</h1>
+      <h1 id="title">Upload Files</h1>
       <div id="content">
         <a id="login-link" href="${
           import.meta.env.VITE_APP_COGNITO_LOGIN_URL
@@ -21,7 +21,7 @@ const App = async () => {
   const upload = withCognitoCreds(uploadFn)
 
   document.querySelector("#app").innerHTML = `
-    <h1 id="title">AWS Simple Cognito Auth</h1>
+    <h1 id="title">Upload Files</h1>
     <p>
       <a href="${import.meta.env.VITE_APP_COGNITO_LOGOUT_URL}">Sign Out</a>
     </p>
