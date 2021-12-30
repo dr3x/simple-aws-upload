@@ -1,3 +1,6 @@
+# This is from the tutorial at
+[How to use AWS Cognito to access AWS Services](https://dev.to/zenika/how-to-use-aws-cognito-to-access-aws-services-150e)
+
 # File uploads with AWS Cognito and S3
 
 This repo serves as a proof of concept to use AWS Cognito to upload files for authenticated users.
