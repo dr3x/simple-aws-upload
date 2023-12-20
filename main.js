@@ -6,7 +6,6 @@ import { listItemsFn, uploadFn } from "./utils/s3"
 const App = async () => {
   if (!idToken) {
     return (document.querySelector("#app").innerHTML = `
-      <h1 id="title">Upload Files</h1>
       <div id="content">
         <a id="login-link" href="${
           import.meta.env.VITE_APP_COGNITO_LOGIN_URL
